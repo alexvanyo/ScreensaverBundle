@@ -227,7 +227,7 @@ public class Screen extends JPanel {
 			}
 		}
 		
-		// Sets the width of the lines to be 3 pixels, and sets the color to be yellow (RGB 255,255,0), with a transparency of 0 (255/255)
+		// Sets the width of the lines to be 3 pixels
 		g.setStroke(new BasicStroke(3));
 		
 		// For all line segments that are currently calculated, draw a line from their start position to their end position.
