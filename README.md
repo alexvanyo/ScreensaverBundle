@@ -20,4 +20,5 @@ This class extends all listeners needed so any action will quit the program, fun
 ##Todo
 
 Add configuration/settings file, so screensaver is fully customizable
+
 Continuously request focus so other applications can't appear in front of it
