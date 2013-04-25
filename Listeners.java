@@ -8,6 +8,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 /**
+ *
+ * Created with Eclipse
  * 
  * This class handles all listeners (user input). As the program is intended to be a screensaver, when any user input is detected the program is exited.
  * 
@@ -21,7 +23,7 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (!Main.ONLY_EXIT_ON_KEY) {
+		if (!FileHandler.ONLY_EXIT_ON_KEY) {
 			Main.close();
 		}
 	}
@@ -33,7 +35,7 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if (!Main.ONLY_EXIT_ON_KEY) {
+		if (!FileHandler.ONLY_EXIT_ON_KEY) {
 			if (previousPoint.x == -1) {
 				// If previousPoint has a -1 value as its x value (The first time the function is called), previousPoint is to be where the mouse is.
 				previousPoint = e.getPoint();
@@ -48,7 +50,7 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (!Main.ONLY_EXIT_ON_KEY) {
+		if (!FileHandler.ONLY_EXIT_ON_KEY) {
 			Main.close();
 		}
 	}
@@ -67,21 +69,21 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if (!Main.ONLY_EXIT_ON_KEY) {
+		if (!FileHandler.ONLY_EXIT_ON_KEY) {
 			Main.close();
 		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == Main.EXIT_KEY || !Main.ONLY_EXIT_ON_KEY) {
+		if (e.getKeyCode() == FileHandler.EXIT_KEY || !FileHandler.ONLY_EXIT_ON_KEY) {
 			Main.close();
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (!Main.ONLY_EXIT_ON_KEY) {
+		if (!FileHandler.ONLY_EXIT_ON_KEY) {
 			Main.close();
 		}
 	}

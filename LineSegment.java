@@ -1,5 +1,7 @@
 /**
- * 
+ *
+ * Created with Eclipse
+ *
  * This class serves as a wrapper for the line segments. It defines the position of the line (start and end of it), as well as the angle at which the line is pointing.
  * 
  * @author Alex

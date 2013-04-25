@@ -1,0 +1,19 @@
+# Only lines that start with one of the accepted options will be processed.
+# Boolean values should have a 'true' or 'false'.
+# Every option should start with the option, followed by an equals sign, followed by the value.
+# There shouldn't be any spaces in the options.
+# Options that are omitted are set to there default
+# Possible options:
+#   no-wait-between-segments (boolean)
+#   hide-previous-iteration (boolean)
+#   max-number-of-iterations (int, with the first iteration (straight line) being iteration 0)
+#   wait-between-iterations (long, in milliseconds)
+#   wait-between-segments (long, in milliseconds)
+#   only-exit-on-key (boolean)
+
+no-wait-between-segments=false
+hide-previous-iteration=false
+max-number-of-iterations=14
+wait-between-iterations=500
+wait-between-segments=25
+only-exit-on-key=true
