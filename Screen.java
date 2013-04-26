@@ -67,7 +67,7 @@ public class Screen extends JPanel {
 
                     // If the number of iterations is 0 (first time through the loop), or the number of iterations exceeds the max allowed,
                     // then line segments and old line segments are reset.
-                    if (iterations == 0 || iterations > FileHandler.MAX_NUMBER_OF_ITERATIONS) {
+                    if (iterations == 0 || iterations > FileHandler.IntOptions.MAX_NUMBER_OF_ITERATIONS.getValue()) {
                         iterations = 0;
                         lineSegmentLength = lineSegmentEquivalent;
                         lineSegments = new LineSegment[1];
@@ -79,7 +79,7 @@ public class Screen extends JPanel {
 
                     // Between each iteration, the thread waits
                     try {
-                        Thread.sleep(FileHandler.WAIT_BETWEEN_ITERATIONS);
+                        Thread.sleep(FileHandler.LongOptions.WAIT_BETWEEN_ITERATIONS.getValue());
                     } catch (Exception e) {
                         System.err.print(e);
                     }
@@ -135,9 +135,9 @@ public class Screen extends JPanel {
 
                         // If debug option NO_WAIT_BETWEEN_SEGMENTS is not enabled:
                         // This makes the thread wait in between calculating (and therefore displaying) each segment.
-                        if (!FileHandler.NO_WAIT_BETWEEN_SEGMENTS) {
+                        if (!FileHandler.BooleanOptions.NO_WAIT_BETWEEN_SEGMENTS.getValue()) {
                             try {
-                                Thread.sleep(FileHandler.WAIT_BETWEEN_SEGMENTS);
+                                Thread.sleep(FileHandler.LongOptions.WAIT_BETWEEN_SEGMENTS.getValue());
                             } catch (Exception e) {
                                 System.err.print(e);
                             }
@@ -165,9 +165,9 @@ public class Screen extends JPanel {
 
                         // If debug option NO_WAIT_BETWEEN_SEGMENTS is not enabled:
                         // This makes the thread wait in between calculating (and therefore displaying) each segment.
-                        if (!FileHandler.NO_WAIT_BETWEEN_SEGMENTS) {
+                        if (!FileHandler.BooleanOptions.NO_WAIT_BETWEEN_SEGMENTS.getValue()) {
                             try {
-                                Thread.sleep(FileHandler.WAIT_BETWEEN_SEGMENTS);
+                                Thread.sleep(FileHandler.LongOptions.WAIT_BETWEEN_SEGMENTS.getValue());
                             } catch (Exception e) {
                                 System.err.print(e);
                             }
@@ -214,7 +214,7 @@ public class Screen extends JPanel {
 
 		// If debug option HIDE_PREVIOUS_ITERATION is not enabled:
 		// Draws the faded line that depicts the previous iteration of lines.
-		if (!FileHandler.HIDE_PREVIOUS_ITERATION) {
+		if (!FileHandler.BooleanOptions.HIDE_PREVIOUS_ITERATION.getValue()) {
 			// Sets the width of the lines to be 1 pixel, and sets the color to be yellow (RGB 255,255,0), with a high transparency (40/255)
 			g.setStroke(new BasicStroke(2));
 			

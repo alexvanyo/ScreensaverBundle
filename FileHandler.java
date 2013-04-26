@@ -15,14 +15,6 @@ import java.util.ArrayList;
 
 public class FileHandler {
 
-    public static boolean NO_WAIT_BETWEEN_SEGMENTS = false;
-    public static boolean HIDE_PREVIOUS_ITERATION = false;
-    public static int MAX_NUMBER_OF_ITERATIONS = 20;
-    public static long WAIT_BETWEEN_ITERATIONS = 500;
-    public static long WAIT_BETWEEN_SEGMENTS = 25;
-    public static boolean ONLY_EXIT_ON_KEY = false;
-    public static int EXIT_KEY = KeyEvent.VK_ESCAPE;
-
     private ArrayList<String> optionsList;
 
     public void loadOptions() {
@@ -47,62 +39,153 @@ public class FileHandler {
             System.err.print(e);
         }
 
-        for (Options optionI : Options.values()) {
+        for (FileOptions optionI : FileOptions.values()) {
             optionI.setValue(get(optionI));
         }
     }
 
-    public String get(Options option) {
+    public String get(FileOptions option) {
         String value = "";
 
         for (String lineI : optionsList) {
-            if (lineI.startsWith(option.getString())) {
-                value = lineI.substring(option.getString().length() + 1);
+            if (lineI.startsWith(option.getName())) {
+                value = lineI.substring(option.getName().length() + 1);
             }
         }
 
         return value;
     }
 
-    public enum Options {
-        NO_WAIT_BETWEEN_SEGMENTS_OPTIONS("no-wait-between-segments", OptionTypes.BOOLEAN),
-        HIDE_PREVIOUS_ITERATION_OPTIONS("hide-previous-iteration", OptionTypes.BOOLEAN),
-        MAX_NUMBER_OF_ITERATIONS_OPTIONS("max-number-of-iterations", OptionTypes.INT),
-        WAIT_BETWEEN_ITERATIONS_OPTIONS("wait-between-iterations", OptionTypes.LONG),
-        WAIT_BETWEEN_SEGMENTS_OPTIONS("wait-between-segments", OptionTypes.LONG),
-        ONLY_EXIT_ON_KEY_OPTIONS("only-exit-on-key", OptionTypes.BOOLEAN),
-        EXIT_KEY_OPTIONS("exit-key", OptionTypes.INT);
+    public static enum BooleanOptions {
+        NO_WAIT_BETWEEN_SEGMENTS(false),
+        HIDE_PREVIOUS_ITERATION(false),
+        ONLY_EXIT_ON_KEY(false);
+
+        private boolean value;
+
+        private BooleanOptions(boolean value) {
+            this.value = value;
+        }
+
+        public boolean getValue() {
+            return value;
+        }
+
+        public void setValue(boolean value) {
+            this.value = value;
+        }
+    }
+
+    public static enum IntOptions {
+        EXIT_KEY(KeyEvent.VK_ESCAPE),
+        MAX_NUMBER_OF_ITERATIONS(20);
+
+        private int value;
+
+        private IntOptions(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public void setValue(int value) {
+            this.value = value;
+        }
+    }
+
+    public static enum LongOptions {
+        WAIT_BETWEEN_ITERATIONS(500),
+        WAIT_BETWEEN_SEGMENTS(25);
+
+        private long value;
+
+        private LongOptions(long value) {
+            this.value = value;
+        }
+
+        public long getValue() {
+            return value;
+        }
+
+        public void setValue(long value) {
+            this.value = value;
+        }
+    }
+
+    public static enum FileOptions {
+        NO_WAIT_BETWEEN_SEGMENTS_OPTIONS("no-wait-between-segments", OptionTypes.BOOLEAN, BooleanOptions.NO_WAIT_BETWEEN_SEGMENTS, null, null),
+        HIDE_PREVIOUS_ITERATION_OPTIONS("hide-previous-iteration", OptionTypes.BOOLEAN, BooleanOptions.HIDE_PREVIOUS_ITERATION, null, null),
+        MAX_NUMBER_OF_ITERATIONS_OPTIONS("max-number-of-iterations", OptionTypes.INT, null, IntOptions.MAX_NUMBER_OF_ITERATIONS, null),
+        WAIT_BETWEEN_ITERATIONS_OPTIONS("wait-between-iterations", OptionTypes.LONG, null, null, LongOptions.WAIT_BETWEEN_ITERATIONS),
+        WAIT_BETWEEN_SEGMENTS_OPTIONS("wait-between-segments", OptionTypes.LONG, null, null, LongOptions.WAIT_BETWEEN_SEGMENTS),
+        ONLY_EXIT_ON_KEY_OPTIONS("only-exit-on-key", OptionTypes.BOOLEAN, BooleanOptions.ONLY_EXIT_ON_KEY, null, null),
+        EXIT_KEY_OPTIONS("exit-key", OptionTypes.INT, null, IntOptions.EXIT_KEY, null);
 
         private String name;
         private OptionTypes type;
 
-        private Options(String name, OptionTypes type) {
+        private BooleanOptions booleanOption;
+        private IntOptions intOption;
+        private LongOptions longOption;
+
+        private FileOptions(String name, OptionTypes type, BooleanOptions booleanOption, IntOptions intOption, LongOptions longOption) {
             this.name = name;
             this.type = type;
+
+            if (booleanOption != null) {
+                this.booleanOption = booleanOption;
+            } else if (intOption != null) {
+                this.intOption = intOption;
+            } else if (longOption != null) {
+                this.longOption = longOption;
+            }
         }
 
-        public String getString() {
+        public String getName() {
             return name;
+        }
+
+        public OptionTypes getType() {
+            return type;
         }
 
         public void setValue(String value) {
             if (value.isEmpty()) {
                 return;
             }
-            if (name.equals(NO_WAIT_BETWEEN_SEGMENTS_OPTIONS.getString())) {
-                NO_WAIT_BETWEEN_SEGMENTS = Boolean.parseBoolean(value);
-            } else if (name.equals(HIDE_PREVIOUS_ITERATION_OPTIONS.getString())) {
-                HIDE_PREVIOUS_ITERATION = Boolean.parseBoolean(value);
-            } else if (name.equals(MAX_NUMBER_OF_ITERATIONS_OPTIONS.getString())) {
-                MAX_NUMBER_OF_ITERATIONS = Integer.parseInt(value);
-            } else if (name.equals(WAIT_BETWEEN_ITERATIONS_OPTIONS.getString())) {
-                WAIT_BETWEEN_ITERATIONS = Long.parseLong(value);
-            } else if (name.equals(WAIT_BETWEEN_SEGMENTS_OPTIONS.getString())) {
-                WAIT_BETWEEN_SEGMENTS = Long.parseLong(value);
-            } else if (name.equals(ONLY_EXIT_ON_KEY_OPTIONS.getString())) {
-                ONLY_EXIT_ON_KEY = Boolean.parseBoolean(value);
-            } else if (name.equals(EXIT_KEY_OPTIONS.getString())) {
-                EXIT_KEY = Integer.parseInt(value);
+
+            boolean booleanReturnValue = false;
+            boolean boolRetValInit = false;
+
+            int intReturnValue = 0;
+            boolean intRetValInit = false;
+
+            long longReturnValue = 0l;
+            boolean longRetValInit = false;
+
+            for (FileOptions optionI : FileOptions.values()) {
+                if (name.equals(optionI.getName())) {
+                    if (optionI.getType() == OptionTypes.BOOLEAN) {
+                        booleanReturnValue = Boolean.parseBoolean(value);
+                        boolRetValInit = true;
+                    } else if (optionI.getType() == OptionTypes.INT) {
+                        intReturnValue = Integer.parseInt(value);
+                        intRetValInit = true;
+                    } else if (optionI.getType() == OptionTypes.LONG) {
+                        longReturnValue = Long.parseLong(value);
+                        longRetValInit = true;
+                    }
+                }
+            }
+
+            if (boolRetValInit) {
+                booleanOption.setValue(booleanReturnValue);
+            } else if (intRetValInit) {
+                intOption.setValue(intReturnValue);
+            } else if (longRetValInit) {
+                longOption.setValue(longReturnValue);
             }
         }
 
