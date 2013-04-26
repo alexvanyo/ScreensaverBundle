@@ -9,11 +9,8 @@
 #   max-number-of-iterations (int, with the first iteration (straight line) being iteration 0)
 #   wait-between-iterations (long, in milliseconds)
 #   wait-between-segments (long, in milliseconds)
-#   only-exit-on-key (boolean)
+#   only-exit-on-key (boolean, use 'Esc' to exit)
+#   current-iteration-segment-width (int, in pixels)
+#   previous-iteration-segment-width (int, in pixels)
 
-no-wait-between-segments=false
-hide-previous-iteration=false
-max-number-of-iterations=14
-wait-between-iterations=500
-wait-between-segments=25
 only-exit-on-key=true

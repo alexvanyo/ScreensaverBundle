@@ -216,7 +216,7 @@ public class Screen extends JPanel {
 		// Draws the faded line that depicts the previous iteration of lines.
 		if (!FileHandler.BooleanOptions.HIDE_PREVIOUS_ITERATION.getValue()) {
 			// Sets the width of the lines to be 1 pixel, and sets the color to be yellow (RGB 255,255,0), with a high transparency (40/255)
-			g.setStroke(new BasicStroke(2));
+			g.setStroke(new BasicStroke(FileHandler.IntOptions.PREVIOUS_ITERATION_SEGMENT_WIDTH.getValue()));
 			
 			// For all of the old line segments, draw a line from their start position to their end position.
 			for (int i = 0; i < oldLineSegments.length; i++) {
@@ -232,7 +232,7 @@ public class Screen extends JPanel {
 		}
 		
 		// Sets the width of the lines to be 3 pixels
-		g.setStroke(new BasicStroke(3));
+		g.setStroke(new BasicStroke(FileHandler.IntOptions.CURRENT_ITERATION_SEGMENT_WIDTH.getValue()));
 		
 		// For all line segments that are currently calculated, draw a line from their start position to their end position.
 		for (int i = 0; i < lineSegments.length; i++) {

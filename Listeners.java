@@ -76,7 +76,8 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == FileHandler.IntOptions.EXIT_KEY.getValue() || !FileHandler.BooleanOptions.ONLY_EXIT_ON_KEY.getValue()) {
+        System.out.println(e.getKeyCode());
+        if (e.getKeyCode() == FileHandler.IntOptions.EXIT_KEY.getValue() || !FileHandler.BooleanOptions.ONLY_EXIT_ON_KEY.getValue()) {
 			Main.close();
 		}
 	}

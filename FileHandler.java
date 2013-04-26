@@ -78,7 +78,9 @@ public class FileHandler {
 
     public static enum IntOptions {
         EXIT_KEY(KeyEvent.VK_ESCAPE),
-        MAX_NUMBER_OF_ITERATIONS(20);
+        MAX_NUMBER_OF_ITERATIONS(14),
+        CURRENT_ITERATION_SEGMENT_WIDTH(3),
+        PREVIOUS_ITERATION_SEGMENT_WIDTH(2);
 
         private int value;
 
@@ -121,7 +123,9 @@ public class FileHandler {
         WAIT_BETWEEN_ITERATIONS_OPTIONS("wait-between-iterations", OptionTypes.LONG, null, null, LongOptions.WAIT_BETWEEN_ITERATIONS),
         WAIT_BETWEEN_SEGMENTS_OPTIONS("wait-between-segments", OptionTypes.LONG, null, null, LongOptions.WAIT_BETWEEN_SEGMENTS),
         ONLY_EXIT_ON_KEY_OPTIONS("only-exit-on-key", OptionTypes.BOOLEAN, BooleanOptions.ONLY_EXIT_ON_KEY, null, null),
-        EXIT_KEY_OPTIONS("exit-key", OptionTypes.INT, null, IntOptions.EXIT_KEY, null);
+        EXIT_KEY_OPTIONS("exit-key", OptionTypes.INT, null, IntOptions.EXIT_KEY, null),
+        CURRENT_ITERATION_SEGMENT_WIDTH_OPTIONS("current-iteration-segment-width", OptionTypes.INT, null, IntOptions.CURRENT_ITERATION_SEGMENT_WIDTH, null),
+        PREVIOUS_ITERATION_SEGMENT_WIDTH_OPTIONS("previous-iteration-segment-width", OptionTypes.INT, null, IntOptions.PREVIOUS_ITERATION_SEGMENT_WIDTH, null);
 
         private String name;
         private OptionTypes type;
@@ -192,7 +196,7 @@ public class FileHandler {
         private enum OptionTypes {
             BOOLEAN,
             INT,
-            LONG;
+            LONG
         }
     }
 }
