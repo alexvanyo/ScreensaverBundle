@@ -67,7 +67,7 @@ public class Screen extends JPanel {
 
                     // If the number of iterations is 0 (first time through the loop), or the number of iterations exceeds the max allowed,
                     // then line segments and old line segments are reset.
-                    if (iterations == 0 || iterations > FileHandler.IntOptions.MAX_NUMBER_OF_ITERATIONS.getValue()) {
+                    if (iterations == 0 || iterations > FileHandler.Options.MAX_NUMBER_OF_ITERATIONS.getInt()) {
                         iterations = 0;
                         lineSegmentLength = lineSegmentEquivalent;
                         lineSegments = new LineSegment[1];
@@ -79,7 +79,7 @@ public class Screen extends JPanel {
 
                     // Between each iteration, the thread waits
                     try {
-                        Thread.sleep(FileHandler.LongOptions.WAIT_BETWEEN_ITERATIONS.getValue());
+                        Thread.sleep(FileHandler.Options.WAIT_BETWEEN_ITERATIONS.getLong());
                     } catch (Exception e) {
                         System.err.print(e);
                     }
@@ -135,9 +135,9 @@ public class Screen extends JPanel {
 
                         // If debug option NO_WAIT_BETWEEN_SEGMENTS is not enabled:
                         // This makes the thread wait in between calculating (and therefore displaying) each segment.
-                        if (!FileHandler.BooleanOptions.NO_WAIT_BETWEEN_SEGMENTS.getValue()) {
+                        if (!FileHandler.Options.NO_WAIT_BETWEEN_SEGMENTS.getBoolean()) {
                             try {
-                                Thread.sleep(FileHandler.LongOptions.WAIT_BETWEEN_SEGMENTS.getValue());
+                                Thread.sleep(FileHandler.Options.WAIT_BETWEEN_SEGMENTS.getLong());
                             } catch (Exception e) {
                                 System.err.print(e);
                             }
@@ -165,9 +165,9 @@ public class Screen extends JPanel {
 
                         // If debug option NO_WAIT_BETWEEN_SEGMENTS is not enabled:
                         // This makes the thread wait in between calculating (and therefore displaying) each segment.
-                        if (!FileHandler.BooleanOptions.NO_WAIT_BETWEEN_SEGMENTS.getValue()) {
+                        if (!FileHandler.Options.NO_WAIT_BETWEEN_SEGMENTS.getBoolean()) {
                             try {
-                                Thread.sleep(FileHandler.LongOptions.WAIT_BETWEEN_SEGMENTS.getValue());
+                                Thread.sleep(FileHandler.Options.WAIT_BETWEEN_SEGMENTS.getLong());
                             } catch (Exception e) {
                                 System.err.print(e);
                             }
@@ -214,14 +214,14 @@ public class Screen extends JPanel {
 
 		// If debug option HIDE_PREVIOUS_ITERATION is not enabled:
 		// Draws the faded line that depicts the previous iteration of lines.
-		if (!FileHandler.BooleanOptions.HIDE_PREVIOUS_ITERATION.getValue()) {
+		if (!FileHandler.Options.HIDE_PREVIOUS_ITERATION.getBoolean()) {
 			// Sets the width of the lines to be 1 pixel, and sets the color to be yellow (RGB 255,255,0), with a high transparency (40/255)
-			g.setStroke(new BasicStroke(FileHandler.IntOptions.PREVIOUS_ITERATION_SEGMENT_WIDTH.getValue()));
+			g.setStroke(new BasicStroke(FileHandler.Options.PREVIOUS_ITERATION_SEGMENT_WIDTH.getInt()));
 			
 			// For all of the old line segments, draw a line from their start position to their end position.
 			for (int i = 0; i < oldLineSegments.length; i++) {
 				Color tempColor = Color.getHSBColor((((float) 360 / oldLineSegments.length) * i) / 360, 1, 1);
-				g.setColor(new Color(tempColor.getRed(), tempColor.getGreen(), tempColor.getBlue(), 50));
+				g.setColor(new Color(tempColor.getRed(), tempColor.getGreen(), tempColor.getBlue(), Math.round(FileHandler.Options.PREVIOUS_ITERATION_TRANSPARENCY.getFloat() * 255)));
 				
 				if (oldLineSegments[i] != null) {
 					g.drawLine((int) oldLineSegments[i].getStartX(), (int) oldLineSegments[i].getStartY(), (int) oldLineSegments[i].getEndX(), (int) oldLineSegments[i].getEndY());
@@ -232,7 +232,7 @@ public class Screen extends JPanel {
 		}
 		
 		// Sets the width of the lines to be 3 pixels
-		g.setStroke(new BasicStroke(FileHandler.IntOptions.CURRENT_ITERATION_SEGMENT_WIDTH.getValue()));
+		g.setStroke(new BasicStroke(FileHandler.Options.CURRENT_ITERATION_SEGMENT_WIDTH.getInt()));
 		
 		// For all line segments that are currently calculated, draw a line from their start position to their end position.
 		for (int i = 0; i < lineSegments.length; i++) {

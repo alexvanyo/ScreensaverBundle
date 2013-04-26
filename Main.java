@@ -14,25 +14,20 @@ import javax.swing.*;
  *
  */
 public class Main extends JFrame {
-  
-	// Private variables for the JFrame (frame) and the JPanel (screen).
-	private static Main frame;
-	private static Screen screen;
-    private static FileHandler fileHandler;
-	
-	/**
+
+    /**
 	 * Starting method for program. Creates a frame (an instance of Main), initializes it, and adds the Screen to itself.
 	 * 
 	 * @param args Command line arguments for program
 	 */
 	public static void main(String[] args) {
 
-        fileHandler = new FileHandler();
+        FileHandler fileHandler = new FileHandler();
         fileHandler.loadOptions();
 
 		// Defines a JFrame (Main) and a JPanel (Screen).
-		frame = new Main();
-		screen = new Screen();
+        Main frame = new Main();
+        Screen screen = new Screen();
 		
 		// Initializes the JFrame.
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -53,8 +48,6 @@ public class Main extends JFrame {
 	 * Closes the program (In effect simulating the user closing the program)
 	 */
 	public static void close() {
-		// Creates a 'Window Event', and sends it to the system. This simulates closing the program by hand.
-		WindowEvent wEvent = new WindowEvent(frame, WindowEvent.WINDOW_CLOSING);
-		java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wEvent);
+        System.exit(0);
 	}
 }

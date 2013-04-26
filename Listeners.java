@@ -23,7 +23,7 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (!FileHandler.BooleanOptions.ONLY_EXIT_ON_KEY.getValue()) {
+		if (!FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
 			Main.close();
 		}
 	}
@@ -35,7 +35,7 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if (!FileHandler.BooleanOptions.ONLY_EXIT_ON_KEY.getValue()) {
+		if (!FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
 			if (previousPoint.x == -1) {
 				// If previousPoint has a -1 value as its x value (The first time the function is called), previousPoint is to be where the mouse is.
 				previousPoint = e.getPoint();
@@ -50,7 +50,7 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (!FileHandler.BooleanOptions.ONLY_EXIT_ON_KEY.getValue()) {
+		if (!FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
 			Main.close();
 		}
 	}
@@ -69,22 +69,21 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		if (!FileHandler.BooleanOptions.ONLY_EXIT_ON_KEY.getValue()) {
+		if (!FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
 			Main.close();
 		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
-        if (e.getKeyCode() == FileHandler.IntOptions.EXIT_KEY.getValue() || !FileHandler.BooleanOptions.ONLY_EXIT_ON_KEY.getValue()) {
+        if (e.getKeyCode() == FileHandler.Options.EXIT_KEY.getInt() || !FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
 			Main.close();
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (!FileHandler.BooleanOptions.ONLY_EXIT_ON_KEY.getValue()) {
+		if (!FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
 			Main.close();
 		}
 	}

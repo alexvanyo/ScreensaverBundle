@@ -9,8 +9,11 @@
 #   max-number-of-iterations (int, with the first iteration (straight line) being iteration 0)
 #   wait-between-iterations (long, in milliseconds)
 #   wait-between-segments (long, in milliseconds)
-#   only-exit-on-key (boolean, use 'Esc' to exit)
+#   only-exit-on-key (boolean, as defined by 'exit-key' (default is 'Esc'))
+#   exit-key (int, key values can be found at http://docs.oracle.com/javase/6/docs/api/constant-values.html#java.awt.event.KeyEvent.KEY_FIRST)
 #   current-iteration-segment-width (int, in pixels)
 #   previous-iteration-segment-width (int, in pixels)
+#   previous-iteration-transparency (float, 0.0 is transparent, 1.0 is solid)
 
 only-exit-on-key=true
+previous-iteration-transparency=0.2
