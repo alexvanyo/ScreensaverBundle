@@ -1,9 +1,4 @@
-import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -18,11 +13,11 @@ public class FileHandler {
     public void loadOptions() {
         ArrayList<String> optionsList = new ArrayList<String>();
 
-        URL file = this.getClass().getResource("config.txt");
+        InputStream file = this.getClass().getResourceAsStream("config.txt");
 
         try {
             // read the config.txt file and store all lines in optionsList
-            BufferedReader br = new BufferedReader(new FileReader(file.getFile()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(file));
 
             String line = br.readLine();
             while (line != null) {
