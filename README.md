@@ -2,6 +2,10 @@
 
 A screensaver that displays the dragon curve fractal.
 
+In order to create a screensaver for Windows, the first thing that needs to be done is to package the files
+into a executable jar. After doing so, use Launch4j or another packaging tool to turn the jar into an exe.
+Then, simply rename the ----.exe to ----.scr. This scr is now a Windows screensaver.
+
 ##Classes
 
 #### Main:
