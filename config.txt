@@ -2,7 +2,7 @@
 # Boolean values should have a 'true' or 'false'.
 # Every option should start with the option, followed by an equals sign, followed by the value.
 # There shouldn't be any spaces in the options.
-# Options that are omitted are set to there default
+# Options that are omitted are set to the default
 # Possible options:
 #   no-wait-between-segments (boolean)
 #   hide-previous-iteration (boolean)
@@ -10,10 +10,9 @@
 #   wait-between-iterations (long, in milliseconds)
 #   wait-between-segments (long, in milliseconds)
 #   only-exit-on-key (boolean, as defined by 'exit-key' (default is 'Esc'))
-#   exit-key (int, key values can be found at http://docs.oracle.com/javase/6/docs/api/constant-values.html#java.awt.event.KeyEvent.KEY_FIRST)
+#   exit-key (int, key values can be found at: 'http://docs.oracle.com/javase/6/docs/api/constant-values.html#java.awt.event.KeyEvent.KEY_FIRST')
 #   current-iteration-segment-width (int, in pixels)
 #   previous-iteration-segment-width (int, in pixels)
 #   previous-iteration-transparency (float, 0.0 is transparent, 1.0 is solid)
 
 only-exit-on-key=true
-previous-iteration-transparency=0.2

@@ -48,7 +48,8 @@ public class Screen extends JPanel {
 		this.setPreferredSize(new Dimension(screenX, screenY));
 		this.setFocusable(true);
 		this.requestFocusInWindow();
-		
+
+        // hides cursor
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 		
@@ -185,6 +186,7 @@ public class Screen extends JPanel {
                 // Forever, (while the program is running) repaint the screen.
                 while (true) {
                     repaint();
+                    requestFocusInWindow();
                 }
             }
         });
@@ -201,7 +203,7 @@ public class Screen extends JPanel {
 	}
 	
 	/*
-	 * This function paints the screen, and is called whenever repaint(); is called.
+	 * This function paints the screen, and is called whenever repaint() is called.
 	 */
 	@Override
 	public void paintComponent(Graphics gOrig) {

@@ -21,6 +21,7 @@ public class FileHandler {
         URL file = this.getClass().getResource("config.txt");
 
         try {
+            // read the config.txt file and store all lines in optionsList
             BufferedReader br = new BufferedReader(new FileReader(file.getFile()));
 
             String line = br.readLine();
@@ -37,16 +38,19 @@ public class FileHandler {
             System.err.print(e);
         }
 
-        for (Options optionI : Options.values()) {
-            for (String lineI : optionsList) {
+        // cycle through the options and optionsList and check to see if any values need to be updated
+        for (String lineI : optionsList) {
+            for (Options optionI : Options.values()) {
                 if (lineI.startsWith(optionI.getName())) {
                     optionI.setValue(lineI.substring(optionI.getName().length() + 1));
+                    break;
                 }
             }
         }
     }
 
     public static enum Options {
+        // initialize all configurable variables with their config.txt label, default value, and type of variable
         NO_WAIT_BETWEEN_SEGMENTS("no-wait-between-segments", "false", OptionTypes.BOOLEAN),
         HIDE_PREVIOUS_ITERATION("hide-previous-iteration", "false", OptionTypes.BOOLEAN),
         MAX_NUMBER_OF_ITERATIONS("max-number-of-iterations", "14", OptionTypes.INT),
