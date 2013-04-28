@@ -21,6 +21,9 @@ An array of these values is used to represent the fractal.
 ####Listeners:
 This class extends all listeners needed so any action will quit the program, functionality for a screensaver.
 
+####FileHandler:
+Loads the config.txt file and stores the constants for other classes to access.
+
 ##Todo
 
 Add configuration/settings file, so screensaver is fully customizable
