@@ -13,6 +13,8 @@ import javax.swing.*;
  */
 public class Main extends JFrame {
 
+    public static String[] arguments;
+
     public static Main frame;
 
     private boolean running;
@@ -29,7 +31,7 @@ public class Main extends JFrame {
      * Closes the program (In effect simulating the user closing the program)
      */
     public void close() {
-        this.running = true;
+        this.running = false;
         System.exit(0);
     }
 
@@ -41,8 +43,19 @@ public class Main extends JFrame {
 
 	public static void main(String[] args) {
 
+        arguments = args;
+
 		// Defines a JFrame (Main), FileHandler, and a JPanel (Screen).
         frame = new Main();
+
+        if (arguments.length > 0) {
+            if (arguments[0].startsWith("/p")) {
+                frame.close();
+            } else if (arguments[0].startsWith("/c")) {
+                // future settings configuration
+            }
+        }
+
         FileHandler fileHandler = new FileHandler();
         fileHandler.loadOptions();
         Screen screen = new Screen();

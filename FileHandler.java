@@ -55,7 +55,8 @@ public class FileHandler {
         EXIT_KEY("exit-key", "27", OptionTypes.INT),
         CURRENT_ITERATION_SEGMENT_WIDTH("current-iteration-segment-width", "3", OptionTypes.INT),
         PREVIOUS_ITERATION_SEGMENT_WIDTH("previous-iteration-segment-width", "2", OptionTypes.INT),
-        PREVIOUS_ITERATION_TRANSPARENCY("previous-iteration-transparency", "0.2", OptionTypes.FLOAT);
+        PREVIOUS_ITERATION_TRANSPARENCY("previous-iteration-transparency", "0.2", OptionTypes.FLOAT),
+        SHOW_ARGUMENTS("show-arguments", "false", OptionTypes.BOOLEAN);
 
         private final OptionTypes type;
         private String value;

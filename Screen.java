@@ -242,5 +242,13 @@ public class Screen extends JPanel {
 				break;
 			}
 		}
-	}	
+
+        if (FileHandler.Options.SHOW_ARGUMENTS.getBoolean()) {
+            g.setColor(Color.WHITE);
+
+            for (int i = 0; i < Main.arguments.length; i++) {
+                g.drawString(Main.arguments[i], 3, 12 * (i + 1));
+            }
+        }
+    }	
 }
