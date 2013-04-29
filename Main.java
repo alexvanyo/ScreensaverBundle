@@ -33,9 +33,6 @@ public class Main extends JFrame {
      */
     public void close() {
         this.running = false;
-        while (screen.repaintThread.isAlive() || screen.calcThread.isAlive()) {
-            continue;
-        }
         System.exit(0);
     }
 
