@@ -21,6 +21,9 @@ import javax.swing.JPanel;
  */
 public class Screen extends JPanel {
 
+    Thread repaintThread;
+    Thread calcThread;
+
     // Private variables that manage the calculation of the segments.
 	private volatile LineSegment[] lineSegments;
 	private volatile LineSegment[] oldLineSegments;
@@ -59,7 +62,7 @@ public class Screen extends JPanel {
 		Listeners listeners = new Listeners();
 		
 		// Creates the thread that calculates the segments.
-        Thread calcThread = new Thread(new Runnable() {
+        calcThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -175,7 +178,7 @@ public class Screen extends JPanel {
         });
 		
 		// Creates the thread that repaints the JPanel, reflecting changes in the segments.
-        Thread repaintThread = new Thread(new Runnable() {
+        repaintThread = new Thread(new Runnable() {
 
             @Override
             public void run() {

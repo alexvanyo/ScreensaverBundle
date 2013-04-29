@@ -16,6 +16,7 @@ public class Main extends JFrame {
     public static String[] arguments;
 
     public static Main frame;
+    public static Screen screen;
 
     private boolean running;
 
@@ -32,6 +33,9 @@ public class Main extends JFrame {
      */
     public void close() {
         this.running = false;
+        while (screen.repaintThread.isAlive() || screen.calcThread.isAlive()) {
+            continue;
+        }
         System.exit(0);
     }
 
@@ -47,6 +51,9 @@ public class Main extends JFrame {
 
 		// Defines a JFrame (Main), FileHandler, and a JPanel (Screen).
         frame = new Main();
+        FileHandler fileHandler = new FileHandler();
+        fileHandler.loadOptions();
+        screen = new Screen();
 
         if (arguments.length > 0) {
             if (arguments[0].startsWith("/p")) {
@@ -56,10 +63,6 @@ public class Main extends JFrame {
             }
         }
 
-        FileHandler fileHandler = new FileHandler();
-        fileHandler.loadOptions();
-        Screen screen = new Screen();
-		
 		// Initializes the JFrame.
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setUndecorated(true);
