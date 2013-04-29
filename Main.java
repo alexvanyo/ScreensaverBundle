@@ -13,18 +13,38 @@ import javax.swing.*;
  */
 public class Main extends JFrame {
 
+    public static Main frame;
+
+    private boolean running;
+
+    public Main() {
+        this.running = true;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
     /**
-	 * Starting method for program. Creates a frame (an instance of Main), initializes it, and adds the Screen to itself.
-	 * 
-	 * @param args Command line arguments for program
-	 */
+     * Closes the program (In effect simulating the user closing the program)
+     */
+    public void close() {
+        this.running = true;
+        System.exit(0);
+    }
+
+    /**
+     * Starting method for program. Creates a frame (an instance of Main), initializes it, and adds the Screen to itself.
+     *
+     * @param args Command line arguments for program
+     */
+
 	public static void main(String[] args) {
 
+		// Defines a JFrame (Main), FileHandler, and a JPanel (Screen).
+        frame = new Main();
         FileHandler fileHandler = new FileHandler();
         fileHandler.loadOptions();
-
-		// Defines a JFrame (Main) and a JPanel (Screen).
-        Main frame = new Main();
         Screen screen = new Screen();
 		
 		// Initializes the JFrame.
@@ -40,12 +60,5 @@ public class Main extends JFrame {
 		
 		// Displays the JFrame.
 		frame.setVisible(true);
-	}
-	
-	/**
-	 * Closes the program (In effect simulating the user closing the program)
-	 */
-	public static void close() {
-        System.exit(0);
 	}
 }

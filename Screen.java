@@ -64,7 +64,7 @@ public class Screen extends JPanel {
             @Override
             public void run() {
                 // Forever, (while the program is running) calculate new line segment.
-                while (true) {
+                while (Main.frame.isRunning()) {
 
                     // If the number of iterations is 0 (first time through the loop), or the number of iterations exceeds the max allowed,
                     // then line segments and old line segments are reset.
@@ -152,17 +152,13 @@ public class Screen extends JPanel {
                         //or increased by 360, respectively. This keeps the angle between 0 (inclusive) and 360 (exclusive).
                         angle2 += (angle2 >= 360) ? -360 : (angle2 < 0) ? 360 : 0;
 
-                        // This sets the start point of the new segment, which is the same as the end point of the previously calculated line segment.
-                        // We could recalculate it, but if we already have, why do it again?
-                        double startX2 = endX1;
-                        double startY2 = endY1;
                         // This sets the end point of the new line segment. This is going to be the end point of the original line segment.
                         double endX2 = oldLineSegments[i].getEndX();
                         double endY2 = oldLineSegments[i].getEndY();
 
                         // A new line segment at the array index of (i * 2) + 1 (because there are twice as many more line segments in each iteration as the
                         // previous) is formed from these calculated values.
-                        lineSegments[(i * 2) + 1] = new LineSegment(startX2, startY2, endX2, endY2, angle2);
+                        lineSegments[(i * 2) + 1] = new LineSegment(endX1, endY1, endX2, endY2, angle2);
 
                         // If debug option NO_WAIT_BETWEEN_SEGMENTS is not enabled:
                         // This makes the thread wait in between calculating (and therefore displaying) each segment.
@@ -184,7 +180,7 @@ public class Screen extends JPanel {
             @Override
             public void run() {
                 // Forever, (while the program is running) repaint the screen.
-                while (true) {
+                while (Main.frame.isRunning()) {
                     repaint();
                     requestFocusInWindow();
                 }

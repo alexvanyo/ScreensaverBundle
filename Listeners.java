@@ -24,7 +24,7 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if (!FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
-			Main.close();
+			Main.frame.close();
 		}
 	}
 
@@ -42,7 +42,7 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 			} else {
 				// Otherwise, the mouse has moved, and the program should quit.
 				if (Math.hypot(previousPoint.x - e.getPoint().x, previousPoint.y - e.getPoint().y) > 1) {
-					Main.close();
+					Main.frame.close();
 				}
 			}
 		}
@@ -51,7 +51,7 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (!FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
-			Main.close();
+			Main.frame.close();
 		}
 	}
 
@@ -70,21 +70,21 @@ public class Listeners implements MouseListener, MouseMotionListener, MouseWheel
 	@Override
 	public void keyTyped(KeyEvent e) {
 		if (!FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
-			Main.close();
+			Main.frame.close();
 		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == FileHandler.Options.EXIT_KEY.getInt() || !FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
-			Main.close();
+			Main.frame.close();
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (!FileHandler.Options.ONLY_EXIT_ON_KEY.getBoolean()) {
-			Main.close();
+			Main.frame.close();
 		}
 	}
 
