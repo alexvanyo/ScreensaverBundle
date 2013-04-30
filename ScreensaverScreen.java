@@ -1,25 +1,17 @@
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JPanel;
 
 /**
  *
  * Created with Eclipse
  *
  * This class is the main class in the program. It handles the loop that calculates the segments, and draws them to the screen.
- * 
+ *
  * @author Alex
  *
  */
-public class Screen extends JPanel {
+public class ScreensaverScreen extends JPanel {
 
     Thread repaintThread;
     Thread calcThread;
@@ -45,7 +37,7 @@ public class Screen extends JPanel {
 	/**
 	 * Constructor for Screen. This initializes itself, and starts the threads running that run the screensaver.
 	 */
-	public Screen() {
+	public ScreensaverScreen() {
 		
 		// Initializes the JPanel
 		this.setPreferredSize(new Dimension(screenX, screenY));
@@ -67,7 +59,7 @@ public class Screen extends JPanel {
             @Override
             public void run() {
                 // Forever, (while the program is running) calculate new line segment.
-                while (Main.frame.isRunning()) {
+                while (Main.isRunning()) {
 
                     // If the number of iterations is 0 (first time through the loop), or the number of iterations exceeds the max allowed,
                     // then line segments and old line segments are reset.
@@ -183,7 +175,7 @@ public class Screen extends JPanel {
             @Override
             public void run() {
                 // Forever, (while the program is running) repaint the screen.
-                while (Main.frame.isRunning()) {
+                while (Main.isRunning()) {
                     repaint();
                     requestFocusInWindow();
                 }

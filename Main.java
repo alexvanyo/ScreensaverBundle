@@ -1,5 +1,3 @@
-import java.awt.Color;
-
 import javax.swing.*;
 
 /**
@@ -15,24 +13,20 @@ public class Main extends JFrame {
 
     public static String[] arguments;
 
-    public static Main frame;
-    public static Screen screen;
+    public static ScreensaverFrame frame;
+    public static ScreensaverScreen screen;
 
-    private boolean running;
+    private static boolean running;
 
-    public Main() {
-        this.running = true;
-    }
-
-    public boolean isRunning() {
+    public static boolean isRunning() {
         return running;
     }
 
     /**
      * Closes the program (In effect simulating the user closing the program)
      */
-    public void close() {
-        this.running = false;
+    public static void close() {
+        running = false;
         System.exit(0);
     }
 
@@ -46,32 +40,46 @@ public class Main extends JFrame {
 
         arguments = args;
 
-		// Defines a JFrame (Main), FileHandler, and a JPanel (Screen).
-        frame = new Main();
-        FileHandler fileHandler = new FileHandler();
-        fileHandler.loadOptions();
-        screen = new Screen();
+        running = true;
+
+        boolean isSettings = false;
 
         if (arguments.length > 0) {
             if (arguments[0].startsWith("/p")) {
-                frame.close();
+                close();
             } else if (arguments[0].startsWith("/c")) {
-                // future settings configuration
+                isSettings = true;
             }
         }
 
-		// Initializes the JFrame.
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setUndecorated(true);
-		frame.setBackground(Color.black);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		
-		frame.requestFocusInWindow();
-		
-		// Adds the JPanel (Screen) to the JFrame (Main).
-		frame.add(screen);
-		
-		// Displays the JFrame.
-		frame.setVisible(true);
+        try {
+
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+        } catch (ClassNotFoundException e) {
+            System.out.println(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            System.out.println(e);
+        } catch (InstantiationException e) {
+            System.out.println(e);
+        } catch (IllegalAccessException e) {
+            System.out.println(e);
+        }
+
+        // Defines a JFrame (Main), FileHandler, and a JPanel (Screen).
+        FileHandler fileHandler = new FileHandler();
+        fileHandler.loadOptions();
+
+        if (isSettings) {
+            SettingsScreen screen = new SettingsScreen();
+            SettingsFrame frame = new SettingsFrame(screen);
+
+            frame.setVisible(true);
+        } else {
+            ScreensaverScreen screen = new ScreensaverScreen();
+            ScreensaverFrame frame = new ScreensaverFrame(screen);
+
+            frame.setVisible(true);
+        }
 	}
 }
