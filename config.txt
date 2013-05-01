@@ -1,8 +1,12 @@
-# Only lines that start with one of the accepted options will be processed.
+# Any lines that have a number sign (#) will be considered a comment and be ignored by the file saver.
+# After these lines, there should be one empty line, and then all options will follow.
+#
 # Boolean values should have a 'true' or 'false'.
 # Every option should start with the option, followed by an equals sign, followed by the value.
 # There shouldn't be any spaces in the options.
-# Options that are omitted are set to the default
+#
+# Options that aren't specified are set to the default
+#
 # Possible options:
 #   no-wait-between-segments (boolean)
 #   hide-previous-iteration (boolean)

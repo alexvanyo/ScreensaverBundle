@@ -24,6 +24,7 @@ public class ScreensaverFrame extends JFrame {
 
         // Adds the JPanel (Screen) to the JFrame (Main).
         this.add(screen);
+        this.pack();
 
     }
 }

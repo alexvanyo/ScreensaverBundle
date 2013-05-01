@@ -1,4 +1,5 @@
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,6 +10,16 @@ import javax.swing.JFrame;
 public class SettingsFrame extends JFrame {
 
     public SettingsFrame(SettingsScreen screen) {
+        this.setIconImage(new ImageIcon(this.getClass().getResource("resources/icon.png")).getImage());
+        this.setTitle("DragonFractal Screensaver");
+        this.setPreferredSize(new Dimension(325, 400));
+        this.requestFocusInWindow();
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setResizable(false);
+
         this.add(screen);
+        this.pack();
+
+        this.setLocationRelativeTo(this.getRootPane());
     }
 }

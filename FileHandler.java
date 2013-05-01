@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -14,10 +10,37 @@ import java.util.ArrayList;
 
 public class FileHandler {
 
-    public void loadOptions() {
-        ArrayList<String> optionsList = new ArrayList<String>();
+    private static final String configFile = "config.txt";
 
-        InputStream file = this.getClass().getResourceAsStream("config.txt");
+    public static void loadOptions() {
+        ArrayList<String> optionsList = getOptionsAsStrings();
+
+        // cycle through the options and optionsList and check to see if any values need to be updated
+        for (String lineI : optionsList) {
+            for (Options optionI : Options.values()) {
+                if (lineI.startsWith(optionI.getName())) {
+                    optionI.setValue(lineI.substring(optionI.getName().length() + 1));
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void saveOptions() {
+        /*
+        OutputStream file = FileHandler.class.(configFile);
+        ArrayList<String> previousOptionsList = getOptionsAsStrings();
+
+        try {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(file));
+        }
+        */
+    }
+
+    private static ArrayList<String> getOptionsAsStrings() {
+
+        InputStream file = FileHandler.class.getResourceAsStream(configFile);
+        ArrayList<String> optionsList = new ArrayList<String>();
 
         try {
             // read the config.txt file and store all lines in optionsList
@@ -37,15 +60,7 @@ public class FileHandler {
             System.err.print(e);
         }
 
-        // cycle through the options and optionsList and check to see if any values need to be updated
-        for (String lineI : optionsList) {
-            for (Options optionI : Options.values()) {
-                if (lineI.startsWith(optionI.getName())) {
-                    optionI.setValue(lineI.substring(optionI.getName().length() + 1));
-                    break;
-                }
-            }
-        }
+        return optionsList;
     }
 
     public static enum Options {
@@ -64,16 +79,30 @@ public class FileHandler {
 
         private final OptionTypes type;
         private String value;
+        private String defaultValue;
         private final String name;
 
         private Options(String name, String defaultValue, OptionTypes type) {
             this.name = name;
             this.value = defaultValue;
+            this.defaultValue = defaultValue;
             this.type = type;
         }
 
         public String getName() {
             return name;
+        }
+
+        public OptionTypes getType() {
+            return type;
+        }
+
+        public String getDefaultValue() {
+            return defaultValue;
+        }
+
+        public String getValue() {
+            return value;
         }
 
         public void setValue(String value) {
@@ -110,7 +139,7 @@ public class FileHandler {
         }
     }
 
-    private enum OptionTypes {
+    public static enum OptionTypes {
         BOOLEAN,
         INT,
         LONG,

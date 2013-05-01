@@ -66,9 +66,7 @@ public class Main extends JFrame {
             System.out.println(e);
         }
 
-        // Defines a JFrame (Main), FileHandler, and a JPanel (Screen).
-        FileHandler fileHandler = new FileHandler();
-        fileHandler.loadOptions();
+        FileHandler.loadOptions();
 
         if (isSettings) {
             SettingsScreen screen = new SettingsScreen();
