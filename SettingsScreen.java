@@ -16,7 +16,7 @@ public class SettingsScreen extends JPanel {
 
     public SettingsScreen() {
 
-        this.setPreferredSize(new Dimension(300, 400));
+        this.setLayout(new BorderLayout());
 
         JPanel optionsPanel = new JPanel();
 
@@ -34,14 +34,27 @@ public class SettingsScreen extends JPanel {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (OptionSelector optionSelector : optionSelectors) {
-                    optionSelector.updateValue();
+                for (OptionSelector optionSelectorI : optionSelectors) {
+                    optionSelectorI.updateValue();
                 }
 
                 FileHandler.saveOptions();
+
+                Main.close();
             }
         });
         buttonPanel.add(save, BorderLayout.EAST);
+
+        JButton allDefault = new JButton("Reset to Defaults");
+        allDefault.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (OptionSelector optionSelectorI : optionSelectors) {
+                    optionSelectorI.setDefault();
+                }
+            }
+        });
+        buttonPanel.add(allDefault, BorderLayout.CENTER);
 
         JButton cancel = new JButton("Cancel");
         cancel.addActionListener(new ActionListener() {
@@ -55,15 +68,16 @@ public class SettingsScreen extends JPanel {
         optionsPanel.add(buttonPanel);
 
         JScrollPane scrollPane = new JScrollPane(optionsPanel);
+        scrollPane.setPreferredSize(new Dimension(300, 350));
 
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        scrollPane.setPreferredSize(new Dimension(300, 360));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
 
-        this.add(scrollPane);
+        this.add(scrollPane, BorderLayout.NORTH);
     }
 
 }

@@ -53,13 +53,7 @@ public class OptionSelector {
         defaultButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (option.getType() == FileHandler.OptionTypes.BOOLEAN) {
-                    for (int i = 0; i < booleanValues.length; i++) {
-                        if (booleanValues[i].equals(option.getDefaultValue())) {
-                            dropDownMenu.setSelectedIndex(i);
-                        }
-                    }
-                }
+                setDefault();
             }
         });
 
@@ -73,6 +67,18 @@ public class OptionSelector {
             option.setValue(dropDownMenu.getSelectedItem().toString());
         } else {
             option.setValue(textField.getText());
+        }
+    }
+
+    public void setDefault() {
+        if (option.getType() == FileHandler.OptionTypes.BOOLEAN) {
+            for (int i = 0; i < booleanValues.length; i++) {
+                if (booleanValues[i].equals(option.getDefaultValue())) {
+                    dropDownMenu.setSelectedIndex(i);
+                }
+            }
+        } else {
+            textField.setText(option.getValue());
         }
     }
 }

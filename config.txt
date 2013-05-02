@@ -19,6 +19,3 @@
 #   previous-iteration-segment-width (int, in pixels)
 #   previous-iteration-transparency (float, 0.0 is transparent, 1.0 is solid)
 #   show-arguments (boolean)
-
-only-exit-on-key=true
-show-arguments=true

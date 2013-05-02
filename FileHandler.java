@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,8 @@ import java.util.ArrayList;
 
 public class FileHandler {
 
-    private static final String configFile = "config.txt";
+    private static final String localConfigFile = "config.txt";
+    private static final String configFile = System.getenv("APPDATA") + "\\DragonFractal\\config.txt";
 
     public static void loadOptions() {
         ArrayList<String> optionsList = getOptionsAsStrings();
@@ -27,19 +29,45 @@ public class FileHandler {
     }
 
     public static void saveOptions() {
-        /*
-        OutputStream file = FileHandler.class.(configFile);
         ArrayList<String> previousOptionsList = getOptionsAsStrings();
 
         try {
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(file));
+            File file = new File(URI.create("file:/" + configFile.replace("\\", "/")));
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+
+            FileOutputStream outputStream = new FileOutputStream(configFile);
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
+
+            for (String configLineI : previousOptionsList) {
+                if (configLineI.startsWith("#")) {
+                    bw.write(configLineI);
+                    bw.newLine();
+                } else {
+                    bw.newLine();
+                    break;
+                }
+            }
+
+            for (Options optionI : Options.values()) {
+                if (!optionI.getValue().equals(optionI.getDefaultValue())) {
+                    bw.write(optionI.getName() + "=" + optionI.getValue());
+                    bw.newLine();
+                }
+            }
+
+            bw.close();
+        } catch (FileNotFoundException e) {
+            System.err.println(e);
+        } catch (IOException e) {
+            System.out.println(e);
         }
-        */
     }
 
     private static ArrayList<String> getOptionsAsStrings() {
 
-        InputStream file = FileHandler.class.getResourceAsStream(configFile);
+        InputStream file = FileHandler.class.getResourceAsStream(localConfigFile);
         ArrayList<String> optionsList = new ArrayList<String>();
 
         try {
@@ -55,9 +83,9 @@ public class FileHandler {
 
             br.close();
         } catch (FileNotFoundException e) {
-            System.err.print(e);
+            System.err.println(e);
         } catch (IOException e) {
-            System.err.print(e);
+            System.err.println(e);
         }
 
         return optionsList;

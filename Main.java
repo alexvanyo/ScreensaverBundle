@@ -13,9 +13,6 @@ public class Main extends JFrame {
 
     public static String[] arguments;
 
-    public static ScreensaverFrame frame;
-    public static ScreensaverScreen screen;
-
     private static boolean running;
 
     public static boolean isRunning() {
@@ -44,7 +41,7 @@ public class Main extends JFrame {
 
         boolean isSettings = false;
 
-        if (arguments.length > 0) {
+        if (arguments.length > 0 && isCorrectVersionOfWindows()) {
             if (arguments[0].startsWith("/p")) {
                 close();
             } else if (arguments[0].startsWith("/c")) {
@@ -80,4 +77,10 @@ public class Main extends JFrame {
             frame.setVisible(true);
         }
 	}
+
+    private static boolean isCorrectVersionOfWindows() {
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        return osName.contains("win") && (osName.contains("8") || osName.contains("7") || osName.contains("vista") || osName.contains("xp"));
+    }
 }
