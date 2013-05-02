@@ -78,7 +78,7 @@ public class OptionSelector {
                 }
             }
         } else {
-            textField.setText(option.getValue());
+            textField.setText(option.getDefaultValue());
         }
     }
 }

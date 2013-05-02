@@ -67,10 +67,16 @@ public class FileHandler {
 
     private static ArrayList<String> getOptionsAsStrings() {
 
-        InputStream file = FileHandler.class.getResourceAsStream(localConfigFile);
         ArrayList<String> optionsList = new ArrayList<String>();
 
         try {
+            InputStream file;
+            if (new File(configFile).exists()) {
+                file = new FileInputStream(configFile);
+            } else {
+                file = FileHandler.class.getResourceAsStream(localConfigFile);
+            }
+
             // read the config.txt file and store all lines in optionsList
             BufferedReader br = new BufferedReader(new InputStreamReader(file));
 
