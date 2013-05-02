@@ -15,6 +15,8 @@ public class SettingsFrame extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
 
+        this.requestFocusInWindow();
+
         this.add(screen);
         this.pack();
 
