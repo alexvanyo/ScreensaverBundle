@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
  */
 public class OptionSelector {
 
-    private static final String[] booleanValues = new String[] {"true", "false"};
+    private static final String[] booleanValues = new String[]{"true", "false"};
 
     private JLabel name;
     private JComboBox dropDownMenu;

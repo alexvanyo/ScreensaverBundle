@@ -1,13 +1,11 @@
 import javax.swing.*;
 
 /**
- *
  * Created with Eclipse
  *
  * Main Class for Dragon Fractal program. Contains main, the Java starter function, as well as serves as the wrapper for the program.
- * 
- * @author Alex
  *
+ * @author Alex
  */
 public class Main extends JFrame {
 
@@ -33,7 +31,7 @@ public class Main extends JFrame {
      * @param args Command line arguments for program
      */
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
         arguments = args;
 
@@ -76,7 +74,7 @@ public class Main extends JFrame {
 
             frame.setVisible(true);
         }
-	}
+    }
 
     private static boolean isCorrectVersionOfWindows() {
         String osName = System.getProperty("os.name").toLowerCase();

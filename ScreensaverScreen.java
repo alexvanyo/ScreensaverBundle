@@ -3,13 +3,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
- *
  * Created with Eclipse
- *
+ * <p/>
  * This class is the main class in the program. It handles the loop that calculates the segments, and draws them to the screen.
  *
  * @author Alex
- *
  */
 public class ScreensaverScreen extends JPanel {
 
@@ -17,43 +15,43 @@ public class ScreensaverScreen extends JPanel {
     Thread calcThread;
 
     // Private variables that manage the calculation of the segments.
-	private volatile LineSegment[] lineSegments;
-	private volatile LineSegment[] oldLineSegments;
-	private int iterations = 0;
-	private double lineSegmentLength;
-	
-	// Private variables that manage the screen size and layout.
-	// There are no hard-coded values, so the screensaver will work correctly, as long as the width in pixels is at least 1.5 times the sizes of the height
-	private static final int screenX = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-	private static final int screenY = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-	private static final int lineSegmentEquivalent = screenY;
-	private static final int startDrawX = (int) ((screenX - (lineSegmentEquivalent * 1.5)) / 2);
-	private static final int startDrawY = 0;
-	private static final int startX = (int) (startDrawX + (lineSegmentEquivalent / 3));
-	private static final int startY = (int) (startDrawY + ((lineSegmentEquivalent * 2) / 3));
-	private static final int endX = startX + lineSegmentEquivalent;
-	private static final int endY = startY;
-	
-	/**
-	 * Constructor for Screen. This initializes itself, and starts the threads running that run the screensaver.
-	 */
-	public ScreensaverScreen() {
-		
-		// Initializes the JPanel
-		this.setPreferredSize(new Dimension(screenX, screenY));
-		this.setFocusable(true);
-		this.requestFocusInWindow();
+    private volatile LineSegment[] lineSegments;
+    private volatile LineSegment[] oldLineSegments;
+    private int iterations = 0;
+    private double lineSegmentLength;
+
+    // Private variables that manage the screen size and layout.
+    // There are no hard-coded values, so the screensaver will work correctly, as long as the width in pixels is at least 1.5 times the sizes of the height
+    private static final int screenX = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    private static final int screenY = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    private static final int lineSegmentEquivalent = screenY;
+    private static final int startDrawX = (int) ((screenX - (lineSegmentEquivalent * 1.5)) / 2);
+    private static final int startDrawY = 0;
+    private static final int startX = (int) (startDrawX + (lineSegmentEquivalent / 3));
+    private static final int startY = (int) (startDrawY + ((lineSegmentEquivalent * 2) / 3));
+    private static final int endX = startX + lineSegmentEquivalent;
+    private static final int endY = startY;
+
+    /**
+     * Constructor for Screen. This initializes itself, and starts the threads running that run the screensaver.
+     */
+    public ScreensaverScreen() {
+
+        // Initializes the JPanel
+        this.setPreferredSize(new Dimension(screenX, screenY));
+        this.setFocusable(true);
+        this.requestFocusInWindow();
 
         // hides cursor
-		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
-		
-		this.setCursor(blankCursor);
-		
-		// Defines the listeners
-		Listeners listeners = new Listeners();
-		
-		// Creates the thread that calculates the segments.
+        BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+
+        this.setCursor(blankCursor);
+
+        // Defines the listeners
+        Listeners listeners = new Listeners();
+
+        // Creates the thread that calculates the segments.
         calcThread = new Thread(new Runnable() {
 
             @Override
@@ -168,8 +166,8 @@ public class ScreensaverScreen extends JPanel {
                 }
             }
         });
-		
-		// Creates the thread that repaints the JPanel, reflecting changes in the segments.
+
+        // Creates the thread that repaints the JPanel, reflecting changes in the segments.
         repaintThread = new Thread(new Runnable() {
 
             @Override
@@ -181,62 +179,62 @@ public class ScreensaverScreen extends JPanel {
                 }
             }
         });
-		
-		// Starts both threads.
-		repaintThread.start();
-		calcThread.start();
-		
-		// Adds the listeners to itself.
-		this.addMouseListener(listeners);
-		this.addMouseMotionListener(listeners);
-		this.addMouseWheelListener(listeners);
-		this.addKeyListener(listeners);
-	}
-	
-	/*
-	 * This function paints the screen, and is called whenever repaint() is called.
-	 */
-	@Override
-	public void paintComponent(Graphics gOrig) {
-		// Creates a Graphics2D object from the passed Graphics object. This allows more complex drawing functions to be used.
-		Graphics2D g = (Graphics2D) gOrig;
-		
-		// Resets the screen by drawing a black rectangle that covers the entire screen.
-		g.setColor(Color.black);
-		g.fillRect(0, 0, screenX, screenY);
 
-		// If debug option HIDE_PREVIOUS_ITERATION is not enabled:
-		// Draws the faded line that depicts the previous iteration of lines.
-		if (!FileHandler.Options.HIDE_PREVIOUS_ITERATION.getBoolean()) {
-			// Sets the width of the lines to be 1 pixel, and sets the color to be yellow (RGB 255,255,0), with a high transparency (40/255)
-			g.setStroke(new BasicStroke(FileHandler.Options.PREVIOUS_ITERATION_SEGMENT_WIDTH.getInt()));
-			
-			// For all of the old line segments, draw a line from their start position to their end position.
-			for (int i = 0; i < oldLineSegments.length; i++) {
-				Color tempColor = Color.getHSBColor((((float) 360 / oldLineSegments.length) * i) / 360, 1, 1);
-				g.setColor(new Color(tempColor.getRed(), tempColor.getGreen(), tempColor.getBlue(), Math.round(FileHandler.Options.PREVIOUS_ITERATION_TRANSPARENCY.getFloat() * 255)));
-				
-				if (oldLineSegments[i] != null) {
-					g.drawLine((int) oldLineSegments[i].getStartX(), (int) oldLineSegments[i].getStartY(), (int) oldLineSegments[i].getEndX(), (int) oldLineSegments[i].getEndY());
-				} else {
-					break;
-				}
-			}
-		}
-		
-		// Sets the width of the lines to be 3 pixels
-		g.setStroke(new BasicStroke(FileHandler.Options.CURRENT_ITERATION_SEGMENT_WIDTH.getInt()));
-		
-		// For all line segments that are currently calculated, draw a line from their start position to their end position.
-		for (int i = 0; i < lineSegments.length; i++) {
-			
-			g.setColor(Color.getHSBColor((((float) 360 / lineSegments.length) * i) / 360, 1, 1));
-			if (lineSegments[i] != null) {
-				g.drawLine((int) lineSegments[i].getStartX(), (int) lineSegments[i].getStartY(), (int) lineSegments[i].getEndX(), (int) lineSegments[i].getEndY());
-			} else {
-				break;
-			}
-		}
+        // Starts both threads.
+        repaintThread.start();
+        calcThread.start();
+
+        // Adds the listeners to itself.
+        this.addMouseListener(listeners);
+        this.addMouseMotionListener(listeners);
+        this.addMouseWheelListener(listeners);
+        this.addKeyListener(listeners);
+    }
+
+    /*
+     * This function paints the screen, and is called whenever repaint() is called.
+     */
+    @Override
+    public void paintComponent(Graphics gOrig) {
+        // Creates a Graphics2D object from the passed Graphics object. This allows more complex drawing functions to be used.
+        Graphics2D g = (Graphics2D) gOrig;
+
+        // Resets the screen by drawing a black rectangle that covers the entire screen.
+        g.setColor(Color.black);
+        g.fillRect(0, 0, screenX, screenY);
+
+        // If debug option HIDE_PREVIOUS_ITERATION is not enabled:
+        // Draws the faded line that depicts the previous iteration of lines.
+        if (!FileHandler.Options.HIDE_PREVIOUS_ITERATION.getBoolean()) {
+            // Sets the width of the lines to be 1 pixel, and sets the color to be yellow (RGB 255,255,0), with a high transparency (40/255)
+            g.setStroke(new BasicStroke(FileHandler.Options.PREVIOUS_ITERATION_SEGMENT_WIDTH.getInt()));
+
+            // For all of the old line segments, draw a line from their start position to their end position.
+            for (int i = 0; i < oldLineSegments.length; i++) {
+                Color tempColor = Color.getHSBColor((((float) 360 / oldLineSegments.length) * i) / 360, 1, 1);
+                g.setColor(new Color(tempColor.getRed(), tempColor.getGreen(), tempColor.getBlue(), Math.round(FileHandler.Options.PREVIOUS_ITERATION_TRANSPARENCY.getFloat() * 255)));
+
+                if (oldLineSegments[i] != null) {
+                    g.drawLine((int) oldLineSegments[i].getStartX(), (int) oldLineSegments[i].getStartY(), (int) oldLineSegments[i].getEndX(), (int) oldLineSegments[i].getEndY());
+                } else {
+                    break;
+                }
+            }
+        }
+
+        // Sets the width of the lines to be 3 pixels
+        g.setStroke(new BasicStroke(FileHandler.Options.CURRENT_ITERATION_SEGMENT_WIDTH.getInt()));
+
+        // For all line segments that are currently calculated, draw a line from their start position to their end position.
+        for (int i = 0; i < lineSegments.length; i++) {
+
+            g.setColor(Color.getHSBColor((((float) 360 / lineSegments.length) * i) / 360, 1, 1));
+            if (lineSegments[i] != null) {
+                g.drawLine((int) lineSegments[i].getStartX(), (int) lineSegments[i].getStartY(), (int) lineSegments[i].getEndX(), (int) lineSegments[i].getEndY());
+            } else {
+                break;
+            }
+        }
 
         if (FileHandler.Options.SHOW_ARGUMENTS.getBoolean()) {
             g.setColor(Color.WHITE);
@@ -245,5 +243,5 @@ public class ScreensaverScreen extends JPanel {
                 g.drawString(Main.arguments[i], 3, 12 * (i + 1));
             }
         }
-    }	
+    }
 }

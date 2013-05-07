@@ -23,9 +23,3 @@ This class extends all listeners needed so any action will quit the program, fun
 
 ####FileHandler:
 Loads the config.txt file and stores the constants for other classes to access.
-
-##Todo
-
-Add configuration/settings file, so screensaver is fully customizable
-
-Continuously request focus so other applications can't appear in front of it
