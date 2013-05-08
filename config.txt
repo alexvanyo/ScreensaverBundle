@@ -8,14 +8,16 @@
 # Options that aren't specified are set to the default
 #
 # Possible options:
-#   no-wait-between-segments (boolean)
-#   hide-previous-iteration (boolean)
-#   max-number-of-iterations (int, with the first iteration (straight line) being iteration 0)
-#   wait-between-iterations (long, in milliseconds)
-#   wait-between-segments (long, in milliseconds)
-#   only-exit-on-key (boolean, as defined by 'exit-key' (default is 'Esc'))
-#   exit-key (int, key values can be found at: 'http://docs.oracle.com/javase/6/docs/api/constant-values.html#java.awt.event.KeyEvent.KEY_FIRST')
-#   current-iteration-segment-width (int, in pixels)
-#   previous-iteration-segment-width (int, in pixels)
-#   previous-iteration-transparency (float, 0.0 is transparent, 1.0 is solid)
-#   show-arguments (boolean)
+#  ~ no-wait-between-segments (boolean)
+#  ~ hide-previous-iteration (boolean)
+#  ~ max-number-of-iterations (int, with the first iteration (straight line) being iteration 0)
+#  ~ wait-between-iterations (long, in milliseconds)
+#  ~ wait-between-segments (long, in milliseconds)
+#  ~ only-exit-on-key (boolean, as defined by 'exit-key' (default is 'Esc'))
+#  ~ exit-key (int, key values can be found at: 'http://docs.oracle.com/javase/6/docs/api/constant-values.html#java.awt.event.KeyEvent.KEY_FIRST')
+#  ~ current-iteration-segment-width (int, in pixels)
+#  ~ previous-iteration-segment-width (int, in pixels)
+#  ~ previous-iteration-transparency (float, 0.0 is transparent, 1.0 is solid)
+#  ~ show-arguments (boolean)
+#  ~ screensaver-end (float, if this number greater than 0, the screensaver will automatically end in that many seconds.
+#       This could be the time it takes for the screen to turn off minus the time for the screensaver to turn on.

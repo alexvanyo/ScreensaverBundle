@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 /**
@@ -179,6 +181,19 @@ public class ScreensaverScreen extends JPanel {
                 }
             }
         });
+
+        if (FileHandler.Options.SCREENSAVER_END.getFloat() > 0) {
+
+            ActionListener autoEndProgram = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Main.close();
+                }
+            };
+
+            new Timer((int) FileHandler.Options.SCREENSAVER_END.getFloat() * 1000, autoEndProgram).start();
+
+        }
 
         // Starts both threads.
         repaintThread.start();
