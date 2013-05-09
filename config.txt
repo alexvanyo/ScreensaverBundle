@@ -20,4 +20,4 @@
 #  ~ previous-iteration-transparency (float, 0.0 is transparent, 1.0 is solid)
 #  ~ show-arguments (boolean)
 #  ~ screensaver-end (float, if this number greater than 0, the screensaver will automatically end in that many seconds.
-#       This could be the time it takes for the screen to turn off minus the time for the screensaver to turn on.
+#       This could be the time it takes for the screen to turn off.
