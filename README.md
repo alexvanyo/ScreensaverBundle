@@ -8,11 +8,20 @@ Then, simply rename the ----.exe to ----.scr. This scr is now a Windows screensa
 
 ##Classes
 
-#### Main:
-Creates overlying JFrame, and serves as a container for the rest of the program. Also holds debug finals.
+####Main:
+Initializes the screensaver, or frame, given the passed arguments, after loading the options with a FileHandler.
 
-####Screen:
-Most important class, handles painting line segments and the calculating of new line segments.
+####ScreensaverScreen:
+Handles painting and calculating the screensaver.
+
+####ScreensaverFrame:
+Creates a frame that is fullscreen with no borders.
+
+####SettingsScreen:
+Handles drawing of the seperate OptionSelectors.
+
+####SettingsFrame:
+Creates a frame with the desired size and options.
 
 ####LineSegment:
 Serves as a wrapper class that contains 5 values: startX, startY, endX, endY, and angle.
@@ -23,3 +32,7 @@ This class extends all listeners needed so any action will quit the program, fun
 
 ####FileHandler:
 Loads the config.txt file and stores the constants for other classes to access.
+
+####OptionSelector
+All of the options are contained inside an OptionSelector.
+It contains the text area / dropdown, default values, and labels, as well as the functionality of those.
