@@ -18,7 +18,7 @@ public class ScreensaverFrame extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.setIconImage(new ImageIcon(this.getClass().getResource("resources/icon.png")).getImage());
-        this.setTitle("DragonFractal Screensaver");
+        this.setTitle("ScreensaverBundle");
 
         this.requestFocusInWindow();
 

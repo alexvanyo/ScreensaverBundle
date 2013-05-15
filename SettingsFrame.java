@@ -10,7 +10,7 @@ public class SettingsFrame extends JFrame {
 
     public SettingsFrame(SettingsScreen screen) {
         this.setIconImage(new ImageIcon(this.getClass().getResource("resources/icon.png")).getImage());
-        this.setTitle("DragonFractal Screensaver");
+        this.setTitle("ScreensaverBundle");
         this.requestFocusInWindow();
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);

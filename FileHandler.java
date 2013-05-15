@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class FileHandler {
 
     private static final String localConfigFile = "config.txt";
-    private static final String configFile = System.getenv("APPDATA") + "\\DragonFractal\\config.txt";
+    private static final String configFile = System.getenv("APPDATA") + "\\ScreensaverBundle\\config.txt";
 
     public static void loadOptions() {
         ArrayList<String> optionsList = getOptionsAsStrings();
