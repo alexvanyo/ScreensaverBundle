@@ -1,4 +1,4 @@
-#DragonFractal
+#ScreensaverBundle
 
 A screensaver that displays the dragon curve fractal.
 
