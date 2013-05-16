@@ -110,7 +110,8 @@ public class FileHandler {
         PREVIOUS_ITERATION_SEGMENT_WIDTH("previous-iteration-segment-width", "2", OptionTypes.INT),
         PREVIOUS_ITERATION_TRANSPARENCY("previous-iteration-transparency", "0.2", OptionTypes.FLOAT),
         SHOW_ARGUMENTS("show-arguments", "false", OptionTypes.BOOLEAN),
-        SCREENSAVER_END("screensaver-end", "-1", OptionTypes.FLOAT);
+        SCREENSAVER_END("screensaver-end", "-1", OptionTypes.FLOAT),
+        SCREENSAVER_TYPE("screensaver-type", "0", OptionTypes.INT);
 
         private final OptionTypes type;
         private String value;
@@ -179,5 +180,20 @@ public class FileHandler {
         INT,
         LONG,
         FLOAT
+    }
+
+    public static enum ScreensaverTypes {
+        DRAGON_CURVE(0),
+        TYPING(1);
+
+        private int id;
+
+        private ScreensaverTypes(int id) {
+            this.id = id;
+        }
+
+        public int getID() {
+            return id;
+        }
     }
 }

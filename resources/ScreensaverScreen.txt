@@ -291,6 +291,9 @@ public class ScreensaverScreen extends JPanel {
 
                     colorLine = tempChangeColorLine + afterChange;
 
+                    System.out.println("CL: " + colorLine);
+                    System.out.println("AC: " + afterChange);
+
                     multiLineComment = false;
                 }
 
