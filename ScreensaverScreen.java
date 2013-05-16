@@ -470,8 +470,8 @@ public class ScreensaverScreen extends JPanel {
                 }
             }
 
-            String line = file.get(lineIndex).substring(0, stringIndex + 1);
-            String lineColor = fileColors.get(lineIndex).substring(0, stringIndex + 1);
+            String line = file.get(lineIndex).substring(0, stringIndex);
+            String lineColor = fileColors.get(lineIndex).substring(0, stringIndex);
 
             int previousOffset = 5;
 
