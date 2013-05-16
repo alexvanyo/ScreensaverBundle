@@ -8,11 +8,11 @@
 public class LineSegment {
 
     // Private variables defining the start of the line (startX and startY), the end of the line (endX and endY), and the angle (angle)
-    private double startX;
-    private double startY;
-    private double endX;
-    private double endY;
-    private int angle;
+    private final double startX;
+    private final double startY;
+    private final double endX;
+    private final double endY;
+    private final int angle;
 
     public LineSegment(double startX, double startY, double endX, double endY, int angle) {
         this.startX = startX;

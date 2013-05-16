@@ -33,35 +33,36 @@ public class FileHandler {
 
         try {
             File file = new File(URI.create("file:/" + configFile.replace("\\", "/")));
-            file.getParentFile().mkdirs();
-            file.createNewFile();
 
-            FileOutputStream outputStream = new FileOutputStream(configFile);
+            if (file.getParentFile().mkdirs() && file.createNewFile()) {
 
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
+                FileOutputStream outputStream = new FileOutputStream(configFile);
 
-            for (String configLineI : previousOptionsList) {
-                if (configLineI.startsWith("#")) {
-                    bw.write(configLineI);
-                    bw.newLine();
-                } else {
-                    bw.newLine();
-                    break;
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
+
+                for (String configLineI : previousOptionsList) {
+                    if (configLineI.startsWith("#")) {
+                        bw.write(configLineI);
+                        bw.newLine();
+                    } else {
+                        bw.newLine();
+                        break;
+                    }
                 }
-            }
 
-            for (Options optionI : Options.values()) {
-                if (!optionI.getValue().equals(optionI.getDefaultValue())) {
-                    bw.write(optionI.getName() + "=" + optionI.getValue());
-                    bw.newLine();
+                for (Options optionI : Options.values()) {
+                    if (!optionI.getValue().equals(optionI.getDefaultValue())) {
+                        bw.write(optionI.getName() + "=" + optionI.getValue());
+                        bw.newLine();
+                    }
                 }
-            }
 
-            bw.close();
+                bw.close();
+            }
         } catch (FileNotFoundException e) {
             System.err.println(e);
         } catch (IOException e) {
-            System.out.println(e);
+            System.err.println(e);
         }
     }
 
@@ -115,7 +116,7 @@ public class FileHandler {
 
         private final OptionTypes type;
         private String value;
-        private String defaultValue;
+        private final String defaultValue;
         private final String name;
 
         private Options(String name, String defaultValue, OptionTypes type) {
@@ -186,7 +187,7 @@ public class FileHandler {
         DRAGON_CURVE(0),
         TYPING(1);
 
-        private int id;
+        private final int id;
 
         private ScreensaverTypes(int id) {
             this.id = id;

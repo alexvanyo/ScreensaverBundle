@@ -15,9 +15,6 @@ import java.util.ArrayList;
  */
 public class ScreensaverScreen extends JPanel {
 
-    Thread repaintThread;
-    Thread calcThread;
-
     // Private variables that manage the calculation of the segments.
     private volatile LineSegment[] lineSegments;
     private volatile LineSegment[] oldLineSegments;
@@ -61,7 +58,7 @@ public class ScreensaverScreen extends JPanel {
         Listeners listeners = new Listeners();
 
         // Creates the thread that calculates the segments.
-        calcThread = new Thread(new Runnable() {
+        Thread calcThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -78,7 +75,7 @@ public class ScreensaverScreen extends JPanel {
         });
 
         // Creates the thread that repaints the JPanel, reflecting changes in the segments.
-        repaintThread = new Thread(new Runnable() {
+        Thread repaintThread = new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -132,7 +129,7 @@ public class ScreensaverScreen extends JPanel {
         try {
             Thread.sleep(FileHandler.Options.WAIT_BETWEEN_ITERATIONS.getLong());
         } catch (Exception e) {
-            System.err.print(e);
+            System.err.println(e);
         }
 
         // This calculates the new length of each line segment, and sets oldLineSegments to the previous iteration's line segments,
@@ -226,7 +223,7 @@ public class ScreensaverScreen extends JPanel {
 
         try {
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("resources/ScreensaverScreen.txt")));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("resources/Output.txt")));
 
             file = new ArrayList<String>();
             fileColors = new ArrayList<String>();
@@ -266,45 +263,67 @@ public class ScreensaverScreen extends JPanel {
                     }
                 }
 
-                if (line.contains("/**")) {
+                for (int i = 0; i < line.length(); i++) {
+                    String remainderOfLine = line.substring(i);
+
+                    if (remainderOfLine.startsWith("\"") && remainderOfLine.indexOf("\"", 1) > 0) {
+                        // Searches for strings
+
                         String tempChangeColorLine = "";
 
-                    for (int i = 0; i < line.length() - line.indexOf("/**"); i++) {
-                        tempChangeColorLine += "2";
+                        for (int j = 0; j < remainderOfLine.indexOf("\"", 1) + "\"".length(); j++) {
+                            tempChangeColorLine += "3";
+                        }
+
+                        String beforeChange = (i > 0) ? colorLine.substring(0, i) : "";
+                        String afterChange = colorLine.substring(i + remainderOfLine.indexOf("\"", 1) + "\"".length());
+
+                        colorLine = beforeChange + tempChangeColorLine + afterChange;
+
+                        i += remainderOfLine.indexOf("\"", 1);
+
+                    } else if (remainderOfLine.startsWith("/**")) {
+                        // Searches for the start of multi-line comments
+
+                        String tempChangeColorLine = "";
+
+                        for (int j = 0; j < remainderOfLine.length(); j++) {
+                            tempChangeColorLine += "2";
+                        }
+
+                        String beforeChange = (i > 0) ? colorLine.substring(0, i) : "";
+
+                        colorLine = beforeChange + tempChangeColorLine;
+
+                        multiLineComment = true;
+                    } else if (remainderOfLine.startsWith("*/")) {
+                        // Searches for the end of mulit-line comments
+
+                        String tempChangeColorLine = "";
+
+                        for (int j = 0; j < i + "*/".length(); j++) {
+                            tempChangeColorLine += "2";
+                        }
+
+                        String afterChange = colorLine.substring(i + "*/".length());
+
+                        colorLine = tempChangeColorLine + afterChange;
+
+                        multiLineComment = false;
+                    } else if (remainderOfLine.startsWith("//")) {
+                        // Searches for one-line comments
+
+                        String tempChangeColorLine = "";
+
+                        for (int j = 0; j < line.length() - line.indexOf("/**"); j++) {
+                            tempChangeColorLine += "2";
+                        }
+
+                        String beforeChange = colorLine.substring(0, line.indexOf("//"));
+
+                        colorLine = beforeChange + tempChangeColorLine;
                     }
 
-                    String beforeChange = colorLine.substring(0, line.indexOf("/**"));
-
-                    colorLine = beforeChange + tempChangeColorLine;
-
-                    multiLineComment = true;
-                }
-
-                if (line.contains("*/")) {
-                    String tempChangeColorLine = "";
-
-                    for (int i = 0; i < line.indexOf("*/") + "*/".length(); i++) {
-                        tempChangeColorLine += "2";
-                    }
-
-                    String afterChange = colorLine.substring(line.indexOf("*/") + "*/".length());
-
-                    colorLine = tempChangeColorLine + afterChange;
-
-                    multiLineComment = false;
-                }
-
-                // Searches for one-line comments
-                if (line.contains("//")) {
-                    String tempChangeColorLine = "";
-
-                    for (int i = 0; i < line.length() - line.indexOf("//"); i++) {
-                        tempChangeColorLine += "2";
-                    }
-
-                    String beforeChange = colorLine.substring(0, line.indexOf("//"));
-
-                    colorLine = beforeChange + tempChangeColorLine;
                 }
 
                 if (multiLineComment && !line.contains("/**") && !line.contains("*/")) {
@@ -321,15 +340,19 @@ public class ScreensaverScreen extends JPanel {
             }
 
             for (lineIndex = 0; lineIndex < file.size(); lineIndex++) {
-                for (stringIndex = 0; stringIndex < file.get(lineIndex).length(); stringIndex++) {
+                for (stringIndex = 0; stringIndex < file.get(lineIndex).length() - 1; stringIndex++) {
                     Thread.sleep(10);
                 }
+
+                Thread.sleep(50);
             }
 
+            Thread.sleep(1000);
+
         } catch (InterruptedException e) {
-            System.out.println(e);
+            System.err.println(e);
         } catch (IOException e) {
-            System.out.println(e);
+            System.err.println(e);
         }
 
     }
@@ -339,7 +362,19 @@ public class ScreensaverScreen extends JPanel {
         char leadingCharacter = (line.indexOf(keyword, previousIndex) == 0) ? ' ' : line.charAt(line.indexOf(keyword, previousIndex) - 1);
         char trailingCharacter = (line.indexOf(keyword, previousIndex) + keyword.length() - 1 == line.length() - 1) ? ' ' : line.charAt(line.indexOf(keyword, previousIndex) + keyword.length());
 
-        return (leadingCharacter == trailingCharacter && leadingCharacter == ' ') || (leadingCharacter == '(' && trailingCharacter == ')');
+        String[] nonWordCharacters = new String[] {
+                "  ",
+                " :",
+                "()"
+        };
+
+        for (String characters : nonWordCharacters) {
+            if (leadingCharacter == characters.charAt(0) && trailingCharacter == characters.charAt(1)) {
+                return true;
+            }
+        }
+
+        return false;
 
     }
 
@@ -455,6 +490,9 @@ public class ScreensaverScreen extends JPanel {
 
             case '2':
                 return new Color(129, 129, 129);
+
+            case '3':
+                return new Color(50, 255, 50);
 
             default:
                 return new Color(255, 255, 255);
