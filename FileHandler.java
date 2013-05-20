@@ -34,31 +34,31 @@ public class FileHandler {
         try {
             File file = new File(URI.create("file:/" + configFile.replace("\\", "/")));
 
-            if (file.getParentFile().mkdirs() && file.createNewFile()) {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
 
-                FileOutputStream outputStream = new FileOutputStream(configFile);
+            FileOutputStream outputStream = new FileOutputStream(configFile);
 
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
 
-                for (String configLineI : previousOptionsList) {
-                    if (configLineI.startsWith("#")) {
-                        bw.write(configLineI);
-                        bw.newLine();
-                    } else {
-                        bw.newLine();
-                        break;
-                    }
+            for (String configLineI : previousOptionsList) {
+                if (configLineI.startsWith("#")) {
+                    bw.write(configLineI);
+                    bw.newLine();
+                } else {
+                    bw.newLine();
+                    break;
                 }
-
-                for (Options optionI : Options.values()) {
-                    if (!optionI.getValue().equals(optionI.getDefaultValue())) {
-                        bw.write(optionI.getName() + "=" + optionI.getValue());
-                        bw.newLine();
-                    }
-                }
-
-                bw.close();
             }
+
+            for (Options optionI : Options.values()) {
+                if (!optionI.getValue().equals(optionI.getDefaultValue())) {
+                    bw.write(optionI.getName() + "=" + optionI.getValue());
+                    bw.newLine();
+                }
+            }
+
+            bw.close();
         } catch (FileNotFoundException e) {
             System.err.println(e);
         } catch (IOException e) {
