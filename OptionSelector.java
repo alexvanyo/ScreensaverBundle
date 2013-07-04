@@ -42,7 +42,9 @@ public class OptionSelector {
             parent.add(dropDownMenu);
         } else {
             textField = new JTextField(option.getValue());
+            textField.setPreferredSize(new Dimension(200, 20));
             textField.setMaximumSize(new Dimension(200, 20));
+            textField.setMinimumSize(new Dimension(200, 20));
 
             parent.add(textField);
         }

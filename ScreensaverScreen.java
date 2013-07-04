@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created with Eclipse
@@ -74,19 +75,6 @@ public class ScreensaverScreen extends JPanel {
             }
         });
 
-        // Creates the thread that repaints the JPanel, reflecting changes in the segments.
-        Thread repaintThread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                // Forever, (while the program is running) repaint the screen.
-                while (Main.isRunning()) {
-                    repaint();
-                    requestFocusInWindow();
-                }
-            }
-        });
-
         if (FileHandler.Options.SCREENSAVER_END.getFloat() > 0) {
 
             ActionListener autoEndProgram = new ActionListener() {
@@ -100,8 +88,6 @@ public class ScreensaverScreen extends JPanel {
 
         }
 
-        // Starts both threads.
-        repaintThread.start();
         calcThread.start();
 
         // Adds the listeners to itself.
@@ -127,6 +113,7 @@ public class ScreensaverScreen extends JPanel {
 
         // Between each iteration, the thread waits
         try {
+            this.repaint();
             Thread.sleep(FileHandler.Options.WAIT_BETWEEN_ITERATIONS.getLong());
         } catch (Exception e) {
             System.err.println(e);
@@ -185,6 +172,7 @@ public class ScreensaverScreen extends JPanel {
             // This makes the thread wait in between calculating (and therefore displaying) each segment.
             if (!FileHandler.Options.NO_WAIT_BETWEEN_SEGMENTS.getBoolean()) {
                 try {
+                    this.repaint();
                     Thread.sleep(FileHandler.Options.WAIT_BETWEEN_SEGMENTS.getLong());
                 } catch (Exception e) {
                     System.err.print(e);
@@ -211,6 +199,7 @@ public class ScreensaverScreen extends JPanel {
             // This makes the thread wait in between calculating (and therefore displaying) each segment.
             if (!FileHandler.Options.NO_WAIT_BETWEEN_SEGMENTS.getBoolean()) {
                 try {
+                    this.repaint();
                     Thread.sleep(FileHandler.Options.WAIT_BETWEEN_SEGMENTS.getLong());
                 } catch (Exception e) {
                     System.err.print(e);
@@ -223,7 +212,56 @@ public class ScreensaverScreen extends JPanel {
 
         try {
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("resources/Output.txt")));
+            BufferedReader reader = null;
+
+            check_file_java:
+            if (!FileHandler.Options.OUTPUT_FILES_LOCATION.getValue().equals("")) {
+
+                File[] possibleOutputFiles = new File(FileHandler.Options.OUTPUT_FILES_LOCATION.getValue()).listFiles();
+
+                if (possibleOutputFiles.length > 0) {
+
+                    File possibleFile = new File("");
+                    boolean[] checkedFiles = new boolean[possibleOutputFiles.length];
+
+                    for (int i = 0; i < checkedFiles.length; i++) {
+                        checkedFiles[i] = false;
+                    }
+
+                    while (!possibleFile.getAbsolutePath().endsWith(".java")) {
+
+                        int random = new Random().nextInt(possibleOutputFiles.length);
+
+                        if (checkedFiles[random]) {
+                            boolean flag = false;
+
+                            for (boolean checked : checkedFiles) {
+                                if (!checked) {
+                                    flag = true;
+                                    break;
+                                }
+                            }
+
+                            if (!flag) {
+                                break check_file_java;
+                            }
+                        } else {
+                            possibleFile = possibleOutputFiles[random];
+
+                            checkedFiles[random] = true;
+                        }
+                    }
+
+                    reader = new BufferedReader(new InputStreamReader(new FileInputStream(possibleFile)));
+                }
+
+            }
+
+            if (reader == null) {
+
+                reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("resources/Output.txt")));
+
+            }
 
             file = new ArrayList<String>();
             fileColors = new ArrayList<String>();
@@ -263,10 +301,28 @@ public class ScreensaverScreen extends JPanel {
                     }
                 }
 
+                // Searches for numbers
+                for (String number : numbers) {
+                    int previousIndex = 0;
+
+                    while (line.indexOf(number, previousIndex) >= 0) {
+                        if (isSingleWord(line, number, previousIndex)) {
+                            String tempChangeColorLine = "4";
+
+                            String beforeChange = colorLine.substring(0, line.indexOf(number, previousIndex));
+                            String afterChange = colorLine.substring(line.indexOf(number, previousIndex) + tempChangeColorLine.length());
+
+                            colorLine = beforeChange + tempChangeColorLine + afterChange;
+                        }
+
+                        previousIndex = line.indexOf(number, previousIndex) + 1;
+                    }
+                }
+
                 for (int i = 0; i < line.length(); i++) {
                     String remainderOfLine = line.substring(i);
 
-                    if (remainderOfLine.startsWith("\"") && remainderOfLine.indexOf("\"", 1) > 0) {
+                    if (remainderOfLine.startsWith("\"") && remainderOfLine.indexOf("\"", 1) > 0 && (i == 0 || line.charAt(i - 1) != '\\')) {
                         // Searches for strings
 
                         String tempChangeColorLine = "";
@@ -341,12 +397,15 @@ public class ScreensaverScreen extends JPanel {
 
             for (lineIndex = 0; lineIndex < file.size(); lineIndex++) {
                 for (stringIndex = 0; stringIndex < file.get(lineIndex).length() - 1; stringIndex++) {
+                    this.repaint();
                     Thread.sleep(10);
                 }
 
+                this.repaint();
                 Thread.sleep(50);
             }
 
+            this.repaint();
             Thread.sleep(1000);
 
         } catch (InterruptedException e) {
@@ -365,7 +424,12 @@ public class ScreensaverScreen extends JPanel {
         String[] nonWordCharacters = new String[] {
                 "  ",
                 " :",
-                "()"
+                "()",
+                " )",
+                "( ",
+                " ;",
+                " ,",
+                " ."
         };
 
         for (String characters : nonWordCharacters) {
@@ -470,15 +534,27 @@ public class ScreensaverScreen extends JPanel {
                 }
             }
 
-            String line = file.get(lineIndex).substring(0, stringIndex);
-            String lineColor = fileColors.get(lineIndex).substring(0, stringIndex);
+            String line = "";
+            String lineColor = "";
 
-            int previousOffset = 5;
+            if (file.size() > lineIndex) {
+                if (stringIndex == file.get(lineIndex).length()) {
 
-            for (int j = 0; j < line.length(); j++) {
-                g.setColor(getColor(lineColor.charAt(j)));
-                g.drawString(String.valueOf(line.charAt(j)), previousOffset, (trueLineIndex + 1) * g.getFontMetrics().getHeight());
-                previousOffset += g.getFontMetrics().charWidth(line.charAt(j));
+                    line = file.get(lineIndex);
+                    lineColor = fileColors.get(lineIndex);
+                } else {
+
+                    line = file.get(lineIndex).substring(0, stringIndex);
+                    lineColor = fileColors.get(lineIndex).substring(0, stringIndex);
+                }
+
+                int previousOffset = 5;
+
+                for (int j = 0; j < line.length(); j++) {
+                    g.setColor(getColor(lineColor.charAt(j)));
+                    g.drawString(String.valueOf(line.charAt(j)), previousOffset, (trueLineIndex + 1) * g.getFontMetrics().getHeight());
+                    previousOffset += g.getFontMetrics().charWidth(line.charAt(j));
+                }
             }
         }
     }
@@ -493,6 +569,9 @@ public class ScreensaverScreen extends JPanel {
 
             case '3':
                 return new Color(50, 255, 50);
+
+            case '4':
+                return new Color(255, 92, 52);
 
             default:
                 return new Color(255, 255, 255);
@@ -555,5 +634,17 @@ public class ScreensaverScreen extends JPanel {
             "while"
     };
 
+    private static final String[] numbers = new String[]{
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "0"
+    };
 
 }

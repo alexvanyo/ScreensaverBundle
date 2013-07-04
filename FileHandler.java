@@ -112,7 +112,8 @@ public class FileHandler {
         PREVIOUS_ITERATION_TRANSPARENCY("previous-iteration-transparency", "0.2", OptionTypes.FLOAT),
         SHOW_ARGUMENTS("show-arguments", "false", OptionTypes.BOOLEAN),
         SCREENSAVER_END("screensaver-end", "-1", OptionTypes.FLOAT),
-        SCREENSAVER_TYPE("screensaver-type", "0", OptionTypes.INT);
+        SCREENSAVER_TYPE("screensaver-type", "0", OptionTypes.INT),
+        OUTPUT_FILES_LOCATION("output-files-location", "", OptionTypes.STRING);
 
         private final OptionTypes type;
         private String value;
@@ -180,7 +181,8 @@ public class FileHandler {
         BOOLEAN,
         INT,
         LONG,
-        FLOAT
+        FLOAT,
+        STRING
     }
 
     public static enum ScreensaverTypes {

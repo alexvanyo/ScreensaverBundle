@@ -19,5 +19,6 @@
 #  ~ previous-iteration-segment-width (int, in pixels)
 #  ~ previous-iteration-transparency (float, 0.0 is transparent, 1.0 is solid)
 #  ~ show-arguments (boolean)
-#  ~ screensaver-end (float, if this number greater than 0, the screensaver will automatically end in that many seconds.
-#       This could be the time it takes for the screen to turn off.
+#  ~ screensaver-end (float, if this number greater than 0, the screensaver will automatically end in that many seconds)
+#  ~ screensaver-type (int, 0 for dragon fractal, 1 for scrolling code)
+#  ~ output-file-location (String, directory for output files. Default is the code for this application)
